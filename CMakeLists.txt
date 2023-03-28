@@ -3,4 +3,4 @@ project("MDO")
 
 set(CMAKE_CXX_STANDART 20)
 
-add_executable(task_1 task_1/task1.cpp)
+add_executable(kl knapsack_lists/knapsack_lists.cpp)

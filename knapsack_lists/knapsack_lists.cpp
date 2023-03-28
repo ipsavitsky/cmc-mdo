@@ -43,10 +43,13 @@ class knapsack_problem {
                                         .prev_index = -1,
                                         .weight = 0,
                                         .price = 0}}};
+        solution_list.reserve(all_objects.size() + 1);
         for (const object &cur : all_objects) {
             const solution_vector &last_sols = solution_list.back();
             solution_vector neg_sub;
             solution_vector pos_sub;
+            neg_sub.reserve(last_sols.size());
+            pos_sub.reserve(last_sols.size());
             for (solution_vector::const_iterator cur_ss = last_sols.cbegin();
                  cur_ss != last_sols.cend(); ++cur_ss) {
                 subsolution new_sub = *cur_ss;
@@ -64,6 +67,7 @@ class knapsack_problem {
             }
 
             solution_vector new_sol;
+            new_sol.reserve(neg_sub.size() + pos_sub.size());
             solution_vector::const_iterator neg_iter = neg_sub.cbegin();
             solution_vector::const_iterator pos_iter = pos_sub.cbegin();
 
@@ -90,7 +94,9 @@ class knapsack_problem {
             solution_list.push_back(new_sol);
         }
         std::vector<action> res;
-        solution_vector::const_iterator unravel = std::prev(solution_list.back().cend());
+        res.reserve(all_objects.size());
+        solution_vector::const_iterator unravel =
+            std::prev(solution_list.back().cend());
         for (std::vector<solution_vector>::const_reverse_iterator i =
                  solution_list.crbegin();
              i != std::prev(solution_list.crend()); ++i) {
@@ -124,14 +130,14 @@ int main() {
     unsigned int sum = 0;
     unsigned int num_of_obj = 0;
     for (int i = 0; i < res.size(); ++i) {
-        if(res[i] == action::add) {
+        if (res[i] == action::add) {
             sum += objects[i].price;
             ++num_of_obj;
         }
     }
     std::cout << sum << " " << num_of_obj << std::endl;
     for (int i = 0; i < res.size(); ++i) {
-        if(res[i] == action::add) {
+        if (res[i] == action::add) {
             std::cout << i << std::endl;
         }
     }
