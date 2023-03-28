@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <deque>
 #include <iostream>
 #include <vector>
 
@@ -89,20 +88,14 @@ class knapsack_problem {
             std::copy(pos_iter, pos_sub.cend(), std::back_inserter(new_sol));
 
             solution_list.push_back(new_sol);
-            // // ---------------------------------------------
-            // for (const subsolution &sub : new_sol) {
-            //     std::cerr << sub << ' ';
-            // }
-            // std::cerr << std::endl;
-            // // ---------------------------------------------
         }
         std::vector<action> res;
-        const subsolution *unravel = &(solution_list.back().back());
+        solution_vector::const_iterator unravel = std::prev(solution_list.back().cend());
         for (std::vector<solution_vector>::const_reverse_iterator i =
                  solution_list.crbegin();
              i != std::prev(solution_list.crend()); ++i) {
             res.push_back(unravel->v);
-            unravel = &(std::next(i)->at(unravel->prev_index));
+            unravel = std::next(std::next(i)->cbegin(), unravel->prev_index);
         }
         std::reverse(res.begin(), res.end());
         return res;
